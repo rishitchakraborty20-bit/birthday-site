@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Papa</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Playfair Display', serif;
+  overflow: hidden;
+  background: black;
+}
+
+/* INTRO SCREEN */
+.intro {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 3px;
+  z-index: 10;
+  cursor: pointer;
+  transition: opacity 1s ease;
+}
+
+/* Background */
+.background {
+  background: url('photo.jpg') no-repeat center center/cover;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+/* Overlay */
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* TEXT */
+h1 {
+  color: white;
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+/* TEXT POP */
+.show-text {
+  animation: popText 1.5s ease forwards;
+}
+
+@keyframes popText {
+  0% {opacity:0; transform: scale(0.7);}
+  60% {opacity:1; transform: scale(1.05);}
+  100% {opacity:1; transform: scale(1);}
+}
+
+/* POPPERS */
+.popper {
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0;
+}
+
+.pop-left { left: 15%; }
+.pop-right { right: 15%; }
+
+.show-popper {
+  animation: burst 1s ease forwards;
+}
+
+@keyframes burst {
+  0% {opacity:0; transform: scale(0.5);}
+  50% {opacity:1; transform: scale(1.5);}
+  100% {opacity:0; transform: translateY(-60px);}
+}
+
+/* HEARTS */
+.heart {
+  position: absolute;
+  bottom: -20px;
+  color: #ff4d6d;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% {transform: translateY(0); opacity:1;}
+  100% {transform: translateY(-110vh); opacity:0;}
+}
+
+/* MOBILE OPTIMISATION */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 0 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="intro" onclick="start()">
+  Tap to Open ✨
+</div>
+
+<div class="background" id="bg">
+  <div class="overlay">
+    <h1 id="text">Happy Birthday Papa</h1>
+    <div class="popper pop-left" id="left">🎉</div>
+    <div class="popper pop-right" id="right">🎉</div>
+  </div>
+</div>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function start() {
+  document.querySelector('.intro').style.opacity = '0';
+  setTimeout(() => {
+    document.querySelector('.intro').style.display = 'none';
+  }, 1000);
+
+  document.getElementById('bg').style.opacity = '1';
+
+  document.getElementById('music').play();
+
+  setTimeout(() => {
+    document.getElementById('text').classList.add('show-text');
+  }, 800);
+
+  setTimeout(() => {
+    document.getElementById('left').classList.add('show-popper');
+    document.getElementById('right').classList.add('show-popper');
+  }, 2200);
+}
+
+/* Hearts */
+function createHeart() {
+  const h = document.createElement("div");
+  h.classList.add("heart");
+  h.innerHTML = "❤";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.animationDuration = (3 + Math.random() * 3) + "s";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 6000);
+}
+setInterval(createHeart, 500);
+</script>
+
+</body>
+</html>
